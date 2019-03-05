@@ -1,0 +1,89 @@
+connect sys as sysdba;
+password sys
+
+role create 
+
+create role superUser;
+create role admin;
+create role operator;
+
+user create
+
+create user yasin identified by yasin;
+create user aaarif identified by aarif;    /// ak ta a com asa password a
+create user sohan identified by sohan;
+create user mim identified by mim;
+create user mom identified by mom;
+
+grant dawa
+
+grant create session, create table, create view, create sequence to superUser;
+grant create session, create table to admin;
+grant create session to operator;
+
+grant superUser to yasin;
+grant unlimited  tablespace to yasin;
+
+
+grant admin to aaarif;
+grant unlimited  tablespace to aaarif;
+
+
+grant admin to sohan;
+grant unlimited  tablespace to sohan;
+
+
+
+grant operator to mim;
+
+
+grant operator to mom;
+
+
+
+connect yasin;
+password yasin
+create table test(id number(5) primary key, name varchar2(50), email varchar2(50) unique, salary number(38));
+
+///parmission dawar jonno 
+
+grant select on test to mim;
+grant select on test to mom;
+
+/// parmission delect 
+
+revoke select on test from mim;
+revoke select on test from mom;
+
+create sequence test_seq 
+increment by 10
+start with 100
+maxvalue 5000
+nocache
+nocycle;
+insert into test(id, name, email,salary) values (test_seq.nextval,'AAA','yasin@gmai',21000);
+insert into test values (test_seq.nextval,'BBB','aarif@gmai',22000);
+insert into test values (test_seq.nextval,'CCC','Sohan@gmai',23000);
+insert into test values (test_seq.nextval,'DDD','oli@gmai',24000);
+insert into test values (test_seq.nextval,'EEE','suvo@gmai',25000);
+
+
+connect aaarif;
+password aarif // password a 2 ta a
+
+create table Atest(id number(5) primary key, name varchar2(50), email varchar2(50) unique, salary number(38));
+
+connect sohan
+password sohan
+create table Stest(id number(5) primary key, name varchar2(50), email varchar2(50) unique, salary number(38));
+
+connect mim
+password mim
+select * from  yasin.test;
+
+connect mom
+password mom
+select * from  yasin.test;
+
+
+

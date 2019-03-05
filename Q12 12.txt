@@ -1,0 +1,136 @@
+create user user100 identified by 100;
+grant dba to user100;
+conn 
+user100
+100;
+
+create table dept (id number(5) primary key, dep_name varchar2(10) unique);
+
+insert into dept values (dept_seq.nextval,'IT');
+
+create table emp (id number(5), emp_name varchar2(10), salary number(10,2) check (salary>25000),joining_date date check(joining_date<'01-Jan-2000'), dept_id number(10) references dept(id) );
+
+
+
+
+create table emp_backup as select * from emp;
+
+
+
+create sequence dept_seq
+increment by 10
+start with 10
+nocache
+nocycle;
+
+
+create sequence emp_seq
+increment by 1
+start with 1
+nocache
+nocycle;
+
+
+create or replace trigger emp_after_insert after insert on emp
+for each row
+declare
+begin
+insert into emp_backup values (:new.id,:new.emp_name,:new.salary,:new.joining_date,:new.dept_id);
+dbms_output.put_line ('Data inserted');
+end;
+/
+
+
+create or replace trigger emp_after_update after update on emp
+for each row
+declare
+begin
+update emp_backup set emp_name = :new.emp_name,salary=:new.salary,joining_date=:new.joining_date,dept_id=:new.dept_id
+where id = :old.id;
+dbms_output.put_line ('Data update');
+end;
+/
+
+create or replace trigger emp_after_delete after delete on emp
+for each row
+declare
+begin
+delete emp_backup where id = :old.id;
+dbms_output.put_line ('Data delete');
+end;
+/
+
+create or replace procedure insertEmp
+	(
+	e_id in emp.id%type,
+	e_emp_name in emp.emp_name%type,
+	e_salary in emp.salary%type,
+	e_joining_date in emp.joining_date%type,
+	e_dept_id in emp.dept_id%type
+	)
+	is 
+	begin
+	insert into emp (id,emp_name,salary,joining_date,dept_id)
+	values (e_id,e_emp_name,e_salary,e_joining_date,e_dept_id);
+	commit;
+	end;
+	/
+	
+	begin
+	insertEmp (emp_seq.nextval,'AAA',26000,'02-Feb-1991',10);
+	end;
+	/
+	
+	begin
+	insertEmp (emp_seq.nextval,'BBB',26000,'02-Feb-1992',20);
+	end;
+	/
+	
+	begin
+	insertEmp (emp_seq.nextval,'CCC',28000,'02-Feb-1998',30);
+	end;
+	/
+
+	
+create or replace procedure updateEmp
+	(
+	e_id in emp.id%type,
+	e_emp_name in emp.emp_name%type,
+	e_salary in emp.salary%type,
+	e_joining_date in emp.joining_date%type,
+	e_dept_id in emp.dept_id%type
+	)
+	is 
+	begin
+	update emp set emp_name = e_emp_name,salary = e_salary,joining_date= e_joining_date,dept_id = e_dept_id
+	where id = e_id;
+	commit;
+	end;
+	/
+	
+	
+	begin
+	updateEmp (3,'DDD',30000,'02-Feb-1999',20);
+	end;
+	/
+	
+	
+	
+create or replace procedure deleteEmp
+	(e_id in emp.id%type)
+	is 
+	begin
+	delete emp where id = e_id;
+	commit;
+	end;
+	/
+	
+	begin
+	deleteEmp (3);
+	end;
+	/
+	
+create view emp_view as select e.id,e.emp_name,e.salary*12 as "Anual Salary",d.DEP_NAME
+from emp e , dept d where e.DEPT_ID = d.id;
+
+create synonym e for emp_view;
