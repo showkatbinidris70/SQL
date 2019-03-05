@@ -1,0 +1,102 @@
+SQL> create table sydney(usaid number(5), fname varchar2(25) , lname varchar2(25));
+
+Table created.
+
+SQL> create table sydney_backup as select * from sydney;
+
+Table created.
+
+SQL> CREATE OR REPLACE TRIGGER sydney_after_insert AFTER INSERT ON sydney
+  2  FOR EACH ROW
+  3  DECLARE
+  4  BEGIN
+  5  insert into sydney_backup values(:new.usaid, :new.fname, :new.lname);
+  6  end;
+  7  /
+
+Trigger created.
+
+SQL> insert into sydney values(100, 'Showkat', 'Ali');
+
+1 row created.
+
+SQL> select * from sydney_dackup;
+select * from sydney_dackup
+              *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> select * from sydney_backup;
+
+     USAID FNAME                     LNAME                                      
+---------- ------------------------- -------------------------                  
+       100 Showkat                   Ali                                        
+
+SQL> select * from sydney;
+
+     USAID FNAME                     LNAME                                      
+---------- ------------------------- -------------------------                  
+       100 Showkat                   Ali                                        
+
+SQL> CREATE OR REPLACE TRIGGER sydney_after_update
+  2  AFTER UPDATE ON sydney
+  3  FOR EACH ROW
+  4  DECLARE
+  5  BEGIN
+  6  update sydney_backup
+  7  set fname = :new.fname
+  8  where usaid = :old.usaid;
+  9  DBMS_OUTPUT.PUT_LINE('Record successfully updated into sydney_backup table');
+ 10  END;
+ 11  /
+
+Trigger created.
+
+SQL> update sydney set fname='Sabbir' where fname='showkat';
+
+0 rows updated.
+
+SQL> update sydney set fname='Sabbir' where usaid=100;
+
+1 row updated.
+
+SQL> select * from sydney_backup;
+
+     USAID FNAME                     LNAME                                      
+---------- ------------------------- -------------------------                  
+       100 Sabbir                    Ali                                        
+
+SQL> CREATE or REPLACE Trigger usa_after_delete
+  2  AFTER DELETE ON sydney
+  3  FOR EACH ROW
+  4  DECLARE
+  5  BEGIN
+  6  Delete from sydney_backup
+  7  where usaid = :old.usaid;
+  8  DBMS_OUTPUT.PUT_LINE('Record successfully Deleted from sydney_backup table');
+  9  END;
+ 10  /
+
+Trigger created.
+
+SQL> delete from sydney where id=100;
+delete from sydney where id=100
+                         *
+ERROR at line 1:
+ORA-00904: "ID": invalid identifier 
+
+
+SQL> delete from sydney where usaid=100;
+
+1 row deleted.
+
+SQL> select * from sydney_backup;
+
+no rows selected
+
+SQL> select * from sydney_backup;
+
+no rows selected
+
+SQL> spool off;

@@ -1,0 +1,182 @@
+Lesson-5 Reading and Writing Data with SQL
+
+1.	What does it mean by SQL?
+
+SQL is a non-procedural language used for accessing field and record values in relational database table.
+
+2.	What does it mean by filtered query?
+
+A filter query used uses a WHERE clause to include or exclude specific data.
+
+3.	What does it mean by sorted query?
+
+Sorting uses the ORDER BY clause to retrieve records in a specific sorted order.
+
+4.	What does it mean by aggregate query?
+
+A database query with aggregate function or group unction like SUM,MAX,MIN,AVG,COUNT is called aggregate query.
+
+5.	What does it mean by join query?
+ A join query joins table together, returning records from multiple tables.
+
+6.	What does it mean by Nested query?
+A nested query is a query that is embedded into another query. It is also called subquery.
+
+7.	What does it mean by composite queries?
+A composite query is a query that merges multiple query result together, most often using UNION keyword.
+
+8.	Write about data change command shortly?
+
+Data change command or DML command is used to change data. INSERT, UPDATE, DELETE, MERGE is the examples of data change command.
+
+9.	Write about database structure commands shortly?
+Data structure command or DDL commands are used to change database structure. CREATE, ALTER, DROP, RENAME, TRUNCATE is the examples of database structure command.
+
+10.	What does it mean by Cartesian product?
+
+A cross join merges all records in one table with all records in another table, regardless of any matching values. It is also called cross join.
+11.	What does it mean by sefl join?
+A self join simply joins a table to itself and is commonly used with a table containing a hierarchy of records. 
+
+
+Lesson-06 (Advanced Relational Database Modeling)
+
+01. What does it mean by Demoralization?
+Most often the opposite of normalization, more commonly used in data warehouse r reporting environments.
+
+
+02. Shortly describe about materialized view.
+A physically preconstructed view of data containing data copied into the materialized view
+
+03. Shortly describe about index-organized table.
+Build a table in the sorted order of an index, typically using a BTree index.
+
+04. Shortly describe about temporary table.
+Temporary tables can be used on a temporary basis, either for a connected session or for a period or for a period of time.
+
+05. What does it mean by class in terms of object database model?
+An object methodology term for the equivalent of a table in a relational database. 
+
+06. What does it mean by object in terms object database model?
+An object is a generic term applied to anything tangible, such as a table in a relational database.
+
+07. What does it mean by attribute in terms object database model?
+The equivalent of a relational database field, used more often to describe a similar low-level structure in object structure.
+
+08. What does it mean by method in terms of object database model?
+The equivalent to a relational database stored procedure, except that it executes on the data contents of an object, within the bounds of the object.
+
+
+Lesson-07 (Understanding Data Warehouse Database Modeling)
+
+01. What is meant by surrogate key in a data warehouse?
+Used as a replacement or substitute for a descriptive primary key, allowing for better control , better structure, less storage space, more efficient indexing, and absolute surety of uniqueness.
+
+02. What is meant by star schema?
+A single fact table surrounded by a single hierarchical layer of dimensional tables, in a data warehouse database.
+
+03. What is meant by snowflake schema?
+A data warehouse, single fact table structure, with dimension tables in multiple layered hierarchies of dimensional tables.
+
+04. Write the steps to build warehouse module?
+The steps to build warehouse model are as follows:
+01.	Business process
+02.	Granularity 
+03.	Identify and build dimensions 
+04.	Build facts 
+05. What do you know by time dimension?
+Used for temporal analysis in data warehouse. Time dimension table is used for time based data analysis. The result of this is that facts can be analyzed by month, quarter and year.
+
+
+Lesson-08 (Building Fast-Performing Database Modeling)
+1. Write the primary characteristics of OLTP database?
+ Answer: Characteristics of OLTP database are as follows:
+	Large user population
+	Very high concurrency
+	Large database size
+	Very quick reaction time
+	Small transaction
+	More granular
+	Manageability quit difficult
+	Mast have service window.
+2. Write the primary characteristics of Client server database?
+Answer:
+	Small  user population
+	Low level concurrency
+	Small  database size
+	Quick reaction time
+	Small transaction
+	More granular
+	Manageability quit difficult
+	Mast have service window.
+3. Write the primary characteristics of data warehouse database?
+Answer:
+	Minimal user population
+	Very low concurrency  
+	Frightening database size
+	Low reaction time
+	Incredibly large transactions
+	Very low granularity
+	Very demanding manageability
+	Service window is not very essential.
+4. What is meant by auto counter?
+Answer: Allows automated generation of sequences of numbers, usually one after the other, such as 101, 102, and 103 and so on. Some database engines call these sequences.
+5. When not to create index?
+Answer:
+	For a small table
+	Index column is not used for search data.
+	Table data is rapidly modified.
+	Retrieve of data is more than 2% to 4% of total data.
+
+6.	What do you mean by application caching?
+Answer: Application caching is where data can be stored in the memory of a client computer.
+
+Lesson-9 Planning and Preparation through Analysis
+
+1. Write the steps of creating Database Model.
+Answer: The steps of creating database model are as follows:
+1.	Analysis 
+2.	Design 
+3.	Construction 
+4.	Implementation
+2. What are the considerations of analysis for OLTP database model?
+Answer: The considerations of analysis for OLTP database model are:
+1.	Overall objectives
+2.	Company operations
+3.	Business rules
+4.	Planning and timelines
+5.	Budgeting
+6.	Other factors.
+
+Lesson-10 (Creating and Refining Tables During the Design Phase)
+
+1. What does it mean by insert check based on referential integrity?
+Answer: A record can’t be added to a child table unless the parent record exists in the parent table.
+2. What does it mean by update check based on referential integrity?
+Answer: Parent and child table records can’t have their linking key field values changed, unless both are changed simultaneously.
+3. What does it mean by delete check based on referential integrity?
+Answer: A parent table record can’t be deleted when a child table record exists, unless all related child table records are deleted first.
+4. What does it mean by delete cascade check based on referential integrity?
+Answer: A parent table record can be deleted if all child records are deleted first. This is known as a cascading delete.
+
+Lesson-12
+1. What is meant by default option for table?
+Answer: A setting used as an optional value for a field in a record, when a value is not specified.
+2. What is validation check constraint?
+Answer: Validation check settings are sometimes called check constraint. All they do is to check the value in a field when a new record is added, or an existing record is changed.
+3. What is a stored procedure?
+Answer: Stored procedure is a chunk of code stored within and executed from within a database, typically on a data stored in a database.
+4. What is stored function?
+Answer: Stored function is a chunk of code stored within and executed from within a database that returns a single value.
+
+Lesson-13
+1. What is called view?
+Answer: A logical overlay containing a query, executed whenever the view is accessed.
+2. What is meant by index?
+Answer: Usually a copy of a very small sections of table, such as a single field and preferable a short-length field.
+3. What is called RAID array?
+Answer: RAID stands for Redundant Array of Inexpensive Disk that means a bunch of small, cheap disks.
+4. What is called standby database?
+Answer: A failover database. A standby database has minimal activity, usually only adding new records, changing existing records, and deleting existing records.
+5. What is mean by replication of a database?
+Answer: A method used to duplicate and distribute data from a primary or master database, out to a number of other copies of the master database.

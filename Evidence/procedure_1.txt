@@ -1,0 +1,54 @@
+	Procedure
+	create table customer (ID number(5) primary key, name varchar2(30),mobile varchar2(11) unique, country varchar2(50) default 'Bangladesh');
+	
+	CREATE OR REPLACE PROCEDURE insert_customer(
+	p_id IN CUSTOMER.id%TYPE,
+	p_name IN CUSTOMER.name%TYPE,
+	p_mobile IN CUSTOMER.mobile%TYPE,
+	p_country IN CUSTOMER.country%TYPE)
+	IS
+	BEGIN
+	INSERT INTO CUSTOMER(id, name, mobile, country)
+	values(p_id, p_name, p_mobile, p_country);
+	commit;
+	END;
+	/
+	
+	BEGIN
+	insert_customer(100, 'Showkat', '01921839596', 'Bangladesh');
+	END;
+	/
+	
+	CREATE OR REPLACE PROCEDURE update_customer(
+	p_id IN CUSTOMER.id%TYPE,
+	p_name IN CUSTOMER.name%TYPE,
+	p_mobile IN CUSTOMER.mobile%TYPE,
+	p_country IN CUSTOMER.country%TYPE)
+	IS
+	BEGIN
+	update customer set id=p_id, id=p_name, id=p_mobile, id=p_country where id=p_id;
+	commit;
+	END;
+	/
+	
+	BEGIN
+	updatecustomer(100, 'ali', '01921839596', 'Bangladesh');
+	END;
+	/
+	
+	CREATE OR REPLACE PROCEDURE delete_customer(
+	p_id IN CUSTOMER.id%TYPE)
+	IS
+	BEGIN
+	delete from customer where id=p_id;
+	commit;
+	END;
+	/
+	
+	BEGIN
+	deletecustomer(1);
+	END;
+	/
+	
+	
+	

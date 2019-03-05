@@ -1,0 +1,46 @@
+	
+	
+			cteate table text(id number(5), name varchar2(12), salary number(7,2));
+			cteate table text_backup as select * from text;
+			
+			CREATE OR REPLACE TRIGGER text_after_insert AFTER INSERT on text
+			FOR EACH ROWS
+			DECLARE
+			BEGIN
+			insert into text_backup values(:new.id, :new.name, :new,salary);
+			DBMS_OUTPUT.PUT_LINE("Inserted successfully");
+			END;
+			/
+			
+			BEGIN
+			values (1000, 'Showkat', 20000);
+			END;
+			/
+			//\\ //\\
+			CREATE OR REPLACE TRIGGER after_text_update on text
+			FOR EACH ROWS
+			DECLARE
+			BEGIN
+			update text set id=:new.id where id=:old.id;
+			DBMS_OUTPUT.PUT_LINE("Inserted successfully");
+			END;
+			/
+			
+			BEGIN
+			values (2000, 'Showkat', 20000);
+			END;
+			/
+			/\/\/\
+			CREATE OR REPLACE TRIGGER after_text_delete on text
+			FOR EACH ROWS
+			DECLARE
+			BEGIN
+			delete from text where id=:new.id;
+			DBMS_OUTPUT.PUT_LINE("Inserted successfully");
+			END;
+			/
+			
+			BEGIN
+			delete from(2000);
+			END;
+			/

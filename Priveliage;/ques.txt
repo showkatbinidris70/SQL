@@ -1,0 +1,101 @@
+SQL> create role man;
+create role man
+            *
+ERROR at line 1:
+ORA-01921: role name 'MAN' conflicts with another user or role name 
+
+
+SQL> create role sp;
+
+Role created.
+
+SQL> create role oc;
+
+Role created.
+
+SQL> create role si;
+
+Role created.
+
+SQL> create user reja identified by reja;
+
+User created.
+
+SQL> create user saki identified by saki;
+
+User created.
+
+SQL> create user lami identified by lami;
+
+User created.
+
+SQL> create user jaki identified by jaki;
+
+User created.
+
+SQL> create user dami identified by dami;
+
+User created.
+
+SQL> grant sp to reja;
+
+Grant succeeded.
+
+SQL> grant oc to saki, lami;
+
+Grant succeeded.
+
+SQL> grant si to jaki, dami;
+
+Grant succeeded.
+
+SQL> grant create session, create table, create sequence, create procedure, create view to sp;
+
+Grant succeeded.
+
+SQL> grant create session, create table oc;
+grant create session, create table oc
+                                   *
+ERROR at line 1:
+ORA-00905: missing keyword 
+
+
+SQL> grant create session, create table to oc;
+
+Grant succeeded.
+
+SQL> grant create session, create view to si;
+
+Grant succeeded.
+
+SQL> connect sys as sysdba
+Connected.
+SQL> grant unlimited tablespace to sp;
+
+Grant succeeded.
+
+SQL> grant unlimited tablespace to oc;
+
+Grant succeeded.
+
+SQL> grant unlimited tablespace to si;
+
+Grant succeeded.
+
+SQL> connect sys as sysdba
+Connected.
+SQL> grant unlimited tablespace to reja;
+
+Grant succeeded.
+
+SQL> grant unlimited tablespace to saki, lami;
+
+Grant succeeded.
+
+SQL> connect reja
+Connected.
+SQL>  create table test(id number(5) primary key, name varchar2(50));
+
+Table created.
+
+SQL> spool off;

@@ -1,0 +1,240 @@
+ 1. create user newyear and give permission for create, view, synonym
+2. create table category id, cname, 
+3. add constraint pk for id and unique for cname
+4. create another table as employee, id, name, salary, cat_id, ountry
+	id=pk, salary>25000, cat_id fk and not null, country default bd
+5. create sequence for category like 5,10,15
+6. create sequence for employee like, 101,102,103
+7. create a trigger for employee table as insert,update,delete
+8. create a procedure for inserting data
+9. create a view for id, name, salary, country, cname
+10. create a synonym for view
+11. create an index for employee id, salary, country
+ 
+       =============Answer===============
+ connect sys as sysdba
+ enter password:
+
+ create user newyear identified by newyear;
+ grant dba to newyear;
+ grant all privileges to newyear;
+ grant unlimited tablespace to newyear;
+ 
+ connect newyear
+ enter password:
+ 
+ 
+          =========create table============
+ create table category (id number(6), cname varchar2(50));
+ 
+ insert into category(id, cname) values(5, 'abcd');
+ 
+ 
+ 
+ alter table category add constraint cat_id_pk primary key(id);
+ alter table category add constraint cat_cname_uni unique(cname);
+ 
+ 
+ 
+ create table employee(id number(6) primary key, name varchar2(50) not null,
+   salary number(8,2) check(salary>=25000), cat_id number(6), country varchar2(50)
+   default 'Bangladesh', foreign key(cat_id) references category(id));
+   
+ insert into employee(id, name, salary,cat_id, country)
+     values(100, 'AAA', 25000, 5, 'bd');
+          
+
+		  ==========sequence===========
+ create sequence cat_seq increment by 5 start with 5 nocache nocycle;
+ create sequence emp_seq increment by 1 start with 100 nocache nocycle;
+   
+ create table emp_backup as select * from employee;
+   
+   
+       =========create procedure============
+ create or replace procedure insertCategory(
+   p_id in category.id%type,
+   p_cname in category.cname%type)
+ is
+ begin
+ insert into category(id, cname)
+ values(p_id, p_cname);
+ commit;
+ end;
+ /
+ 
+ begin
+ insertCategory(cat_seq.nextval, 'motin');
+ end;
+ /
+ 
+       =========update procedure============
+ create or replace procedure updateCategory(
+   p_id in category.id%type,
+   p_cname in category.cname%type)
+ is
+ begin
+ update category set id = p_id, cname= p_cname
+ where id = p_id or cname = p_cname;
+ commit;
+ end;
+ /
+ 
+ begin
+  updatecategory(5, 'sahin');
+ end;
+ /
+ 
+
+           =========delete procedure============
+ create or replace procedure deleteCategory(
+   p_id in category.id%type,
+   p_cname in category.cname%type)
+ is
+ begin
+ delete from category where id = p_id or cname = p_cname;
+ commit;
+ end;
+ /
+ 
+ 
+ begin
+ deleteCategory(5, 'sahin');
+ end;
+ /
+ 
+ 
+ 
+            =========create trigger============
+create or replace trigger emp_trigger_after after insert on employee
+for each row
+declare
+begin
+insert into emp_backup values(:new.id, :new.name, :new.salary, :new.cat_id, :new.country);
+dbms_output.put_line('Data inserted successfully');
+ end;
+ /
+ 
+  insert into employee(id, name, salary,cat_id, country) values(101, 'BBB', 25000, 5, 'japan');
+ select * from emp_backup;
+ 
+ 
+
+               =========update trigger============
+create or replace trigger emp_trigger_update after update on employee
+for each row
+declare
+begin
+update emp_backup
+set id=:new.id, name=:new.name, salary=:new.salary, cat_id=:new.cat_id, country=:new.country
+where id=:old.id or name=:old.name or country=:old.country;
+dbms_output.put_line('Data updated successfully'); 
+ end;
+ /
+
+update employee set name = 'bbb' where id= 101;
+update employee set id =101 where name= 'bbb';
+
+
+
+            =========delete trigger============
+create or replace trigger emp_trigger_delete after delete on employee
+for each row
+declare
+begin
+delete from emp_backup
+where id = :old.id or name = :old.name;
+dbms_output.put_line('Data deleletd successfully'); 
+ end;
+ /
+
+
+delete from emp_backup where salary = 25000;
+delete from emp_backup where id=101;
+select * from emp_backup;
+  
+          =========create view,synonym,index============
+ create or replace view emp_cat_view as
+	select e.id, e.name, e.salary*12 "Annual Salary", e.country, c.cname 	"Category Name"
+	from employee e, category c
+	where e.cat_id=c.id;
+  
+  create or replace synonym enter for emp_cat_view;
+  
+  create index emp_idx on employee(id,salary,country);
+  
+
+      =========create table3============
+ create table customer(id number(6), name varchar2(50), salary number(8,2));
+ 
+ 
+ alter table customer add constraint cust_id_pk primary key(id);
+ alter table customer add constraint cust_name_uni unique(name);
+ 
+ alter table customer add(phone varchar2(11), city varchar2(50));
+       
+	   
+	   //////////////////////
+ insert into customer(
+ id, name, salary, phone, city)
+ values(01, 'AAA', 25000, 01740197705, 'ab'),
+ (02, 'BBB', 22000, 01840197756, 'pq'),
+ (03, 'CCC', 15000, 01940197721, 'oc'),
+ (04, 'DDD', 20000, 01750197705, 'mn'),
+ (05, 'EEE', 35000, 01540197700, 'xy');
+        
+		
+		/////////////////////
+ update customer set phone= 'mobile';
+ update customer set salary=32000 where id = 03;
+ 
+ 
+ select id, name, salary+(salary*.30) as review_salary from customer;
+ select id, name, salary from customer where salary=(select Min(salary) from customer);
+ 
+ 
+ 
+ desc customer;
+ select * from customer;
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
